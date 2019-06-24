@@ -58,8 +58,14 @@ sed -i_orig -e 's/bitmap_compression=true/bitmap_compression=false/g' /etc/xrdp/
 if [ ! -e /etc/xrdp/startubuntu.sh ]; then
 cat >> /etc/xrdp/startubuntu.sh << EOF
 #!/bin/sh
-export GNOME_SHELL_SESSION_MODE=ubuntu
-export XDG_CURRENT_DESKTOP=ubuntu:GNOME
+if [[ -z "${GNOME_SHELL_SESSION_MODE}" ]]; then
+    export GNOME_SHELL_SESSION_MODE=ubuntu
+fi
+
+if [[ -z "${XDG_CURRENT_DESKTOP}" ]]; then
+    export XDG_CURRENT_DESKTOP=ubuntu:GNOME
+fi
+
 exec /etc/xrdp/startwm.sh
 EOF
 chmod a+x /etc/xrdp/startubuntu.sh
